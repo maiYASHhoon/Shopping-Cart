@@ -30,7 +30,8 @@ const productSchema = new mongoose.Schema({
     type: String,
   },
   status: {
-    type: String,
+    type: Boolean,
+    default: 0,
   },
   amount: {
     type: Number,
@@ -46,35 +47,35 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  Image: {
+  image: {
     type: String,
   },
   //  🎆🎆 this is what subschema looks like 🎆🎆
   category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
-    id: false,
-    category: {
-      titleCategory: {
-        type: String,
-      },
-      descriptionCategory: {
-        type: String,
-      },
-      Image: {
-        type: String,
-      },
-      Status: {
-        type: String,
-      },
-      createdAt: {
-        type: Date,
-        default: Date.now(),
-      },
-      updatedAt: {
-        type: Date,
-        default: Date.now(),
-      },
+    titleCategory: {
+      type: String,
+    },
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+      id: false,
+    },
+    descriptionCategory: {
+      type: String,
+    },
+    Image: {
+      type: String,
+    },
+    Status: {
+      type: Boolean,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now(),
     },
   },
 });
