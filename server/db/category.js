@@ -26,7 +26,7 @@ const categorySchema = new mongoose.Schema({
     type: String,
   },
   Status: {
-    type: String,
+    type: Boolean,
   },
   createdAt: {
     type: Date,
