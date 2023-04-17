@@ -43,17 +43,25 @@ router.post("/add-products", async (req, res) => {
 });*/
 
 router.get("/view-products/:id?", async (req, res) => {
+  const { page = 1, limit = 1 } = req.query;
   try {
     if (req.params.id) {
       const myPro = await Product.findOne({ _id: req.params.id });
-      console.log(myPro);
       if (!myPro) {
         return res.status(404).send("Product not found");
       }
       res.send(myPro);
     } else {
-      const myProd = await Product.find({});
-      res.send(myProd);
+      const count = await Product.countDocuments();
+      const myProd = await Product.find({})
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .exec();
+      res.send({
+        products: myProd,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      });
     }
   } catch (e) {
     res.status(400).send(e);

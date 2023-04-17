@@ -13,28 +13,32 @@ router.post("/add-category", async (req, res, next) => {
   }
 });
 
-router.get("/view-category", async (req, res) => {
+router.get("/view-category/:id?", async (req, res) => {
+  const { page = 1, limit = 1 } = req.query;
   try {
-    const myCat = await Category.find();
-    res.status(201).send(myCat);
+    if (req.params.id) {
+      const myCat = await Category.findOne({ _id: req.params.id });
+      if (!myCat) {
+        return res.status(404).send("Category not found");
+      }
+      res.send(myCat);
+    } else {
+      const count = await Category.countDocuments();
+      const myCate = await Category.find({})
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .exec();
+      res.send({
+        products: myCate,
+        totalPages: Math.ceil(count / limit),
+        currentPage: page,
+      });
+    }
   } catch (e) {
-    res.status(400).send(e);
-    //   console.log(e.message);
+    res.status(400).send(e.message);
   }
 });
 
-router.get("/view-category/:id", async (req, res) => {
-  const _id = req.params.id;
-  try {
-    const myCat = await Category.findOne({ _id });
-    if (!myCat) {
-      return res.status(200).send();
-    }
-    res.send(myCat);
-  } catch (e) {
-    res.status(400).send(e);
-  }
-});
 router.patch("/update-category/:id", async (req, res) => {
   const update = Object.keys(req.body);
   const allowedUpdates = ["status", , "title"];
