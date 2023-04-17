@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Category = require("../db/category");
 
-router.post("/add-category", async (req, res) => {
+router.post("/add-category", async (req, res, next) => {
   const myCat = new Category(req.body);
   try {
     await myCat.save();
+    req.myCat = myCat;
     res.status(201).send(myCat);
   } catch (e) {
     res.status(400).send(e);
@@ -36,7 +37,7 @@ router.get("/view-category/:id", async (req, res) => {
 });
 router.patch("/update-category/:id", async (req, res) => {
   const update = Object.keys(req.body);
-  const allowedUpdates = ["status", "title"];
+  const allowedUpdates = ["status", , "title"];
   const isValid = update.every((update) => allowedUpdates.includes(update));
 
   if (!isValid) {

@@ -47,7 +47,7 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  Image: {
+  image: {
     type: String,
   },
   //  🎆🎆 this is what subschema looks like 🎆🎆
