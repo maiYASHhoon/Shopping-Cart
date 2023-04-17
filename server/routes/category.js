@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../db/category");
+const Product = require("../db/product");
 
 router.post("/add-category", async (req, res, next) => {
   const myCat = new Category(req.body);
@@ -79,6 +80,26 @@ router.delete("/delete-category/:id", async (req, res) => {
     res.send(400).send(e);
   }
 });
+
+// DELETE WITH CAT PRO --
+/*router.delete("/delete-category/:id", async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const myCat = await Category.findById(_id);
+    if (!myCat) {
+      return res.status(404).send();
+    }
+    const productsWithCategory = await Product.find({ categoryId: _id });
+    if (productsWithCategory.length > 0) {
+      return res.status(400).send("Please delete the products first");
+    }
+    await Category.deleteOne({ _id });
+    res.send(myCat);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+});*/
 //   router.get("/", (req, res) => res.render("welcome"));
 
 module.exports = router;
