@@ -34,18 +34,29 @@ router.get("/view-category/:id", async (req, res) => {
     res.status(400).send(e);
   }
 });
-
 router.patch("/update-category/:id", async (req, res) => {
+  const update = Object.keys(req.body);
+  const allowedUpdates = ["status", "title"];
+  const isValid = update.every((update) => allowedUpdates.includes(update));
+
+  if (!isValid) {
+    return res.status(400).send({ error: "Invalid update!" });
+  }
+
   const _id = req.params.id;
+
   try {
-    const myCat = await Category.findByIdAndUpdate({ _id });
+    const myCat = await Category.findByIdAndUpdate(_id, req.body, {
+      new: true,
+    });
     if (!myCat) {
       return res.status(404).send();
     }
-    await myCat.save();
+
     res.send(myCat);
+    //   console.log(myCat);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send(e.message);
   }
 });
 

@@ -35,32 +35,6 @@ router.get("/view-products/:id", async (req, res) => {
   }
 });
 
-/*router.patch("/update-products/:id", async (req, res) => {
-  // const update = Object.keys(req.body);
-  // const allowedUpdates = [" titleProduct", "" ];
-  // const isValid = update.every((update) => allowedUpdates.includes(update));
-
-  // if (!isValid) {
-  //   return res.status(400).send({ error: "Invalid update!" });
-  // }
-  const _id = req.params.id;
-
-  try {
-    const myPro = await Product.findByIdAndUpdate(_id);
-    //   const mycomp = await Company.findOne(_id);
-    if (!myPro) {
-      return res.status(404).send();
-    }
-    //   update.forEach((update) => (mycomp[update] = req.body[update]));
-    //
-    await myPro.save();
-    res.send(myPro);
-    console.log(myPro);
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-});*/
-
 router.patch("/update-products/:id", async (req, res) => {
   const update = Object.keys(req.body);
   const allowedUpdates = ["titleProduct", "amount", "quantity"];
